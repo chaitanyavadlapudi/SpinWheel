@@ -11,20 +11,39 @@ const prizeSlice = 360 / prizes.length;
 
 // Load images
 const backgroundImg = new Image();
-backgroundImg.src = '../Assets/back.jpg';
+backgroundImg.src = './Assets/back.jpg';
 
 const wheelImg = new Image();
-wheelImg.src = '../Assets/wheel.png';
+wheelImg.src = './Assets/wheel.png';
 
 const pinImg = new Image();
-pinImg.src = '../Assets/pin.png';
+pinImg.src = './Assets/pin.png';
 
 const standImg = new Image();
-standImg.src = '../Assets/stand.png';
+standImg.src = './Assets/stand.png';
 
 // Spin variables
 let rotationAngle = 0; // Current angle of the wheel
 let spinning = false;  // Whether the wheel is spinning
+let imagesLoaded = 0;  // Counter for loaded images
+
+// Handle image loading
+function imageLoaded() {
+    imagesLoaded++;
+    if (imagesLoaded === 4) {
+        draw(); // All images are loaded, start drawing the game
+    }
+}
+
+backgroundImg.onload = imageLoaded;
+wheelImg.onload = imageLoaded;
+pinImg.onload = imageLoaded;
+standImg.onload = imageLoaded;
+
+backgroundImg.onerror = () => console.error("Error loading background image");
+wheelImg.onerror = () => console.error("Error loading wheel image");
+pinImg.onerror = () => console.error("Error loading pin image");
+standImg.onerror = () => console.error("Error loading stand image");
 
 // Draw the game
 function draw() {
@@ -81,8 +100,3 @@ function spin() {
 
     animate();
 }
-
-// Draw the initial game setup once images are loaded
-backgroundImg.onload = function() {
-    draw();
-};
